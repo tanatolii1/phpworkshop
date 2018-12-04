@@ -1,0 +1,62 @@
+<?php
+if(isset($POST['search'])){
+    $name= $_POST['name'];
+    $connect = mysqli_connect("licalhost", "root", "", "books");
+    $query= "SELECT 'id_author', 'id_genre/*, 'id_partition'*/ FROM 'book' WHERE 'name'=$name LIMIT 1";
+    $result = mysqli_query($connect, $query);
+    if(mysqli_num_rows($result>0)) {
+
+        while ($row = mysqli_fetch_array($result)) {
+            $id_author = $row['id_author'];
+            $id_genre = $row['id_genre'];
+            /*$id_partition=$row['id_partition'];*/
+        }
+    } else{
+        echo "Нет такого названия";
+        $id_author="";
+        $id_genre="";
+    }
+
+    mysqli_free_result($result);
+    mysqli_close($connect);
+} else{
+    $id_author="";
+    $id_genre="";
+    }
+
+?>
+
+<html>
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="../css/style.css?v=1.5" type="text/css">
+    <title>Полка с книгами</title>
+</head>
+<body>
+
+<div class="container">
+    <div class="set-input">
+        <h3> Поиск книги </h3>
+
+   </div>
+
+    <div class="search">
+        <form action="search.php" method="POST">
+
+            Название книги: <input type="text" name="$name"> <br><br>
+            Имя Фамилия писателя : <input type="text" name="$id_author" value="<? echo $id_author;?>"> <br><br>
+            Жанр : <input type="text" name="$id_genre" value="<? echo $id_genre;?>"> <br><br>
+            <!--Ячейка : <input type="text" name="$id_partition" value="<?/* echo $id_partition;*/?>"> <br><br>-->
+            <input type="submit" name="search" value="Find">
+
+        </form>
+
+
+    </div>
+
+</div>
+
+
+</body>
+</html>
+
